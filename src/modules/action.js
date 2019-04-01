@@ -2,7 +2,8 @@
 const Types = {
     CREATE_ITEM: "CREATE_ITEM",
     DELETE_ITEM: "DELETE_ITEM",
-    SIGN_IN: "SIGN_IN"
+    SIGN_IN: "SIGN_IN",
+    SIGN_OUT: "SIGN_OUT"
   };
   // actions
   const createItem = task => ({
@@ -17,9 +18,14 @@ const Types = {
     type: Types.SIGN_IN,
     payload: signIn
   });
+  const signOut = signIn => ({
+    type: Types.SIGN_OUT,
+    payload: signIn
+  });
   export default {
     createItem,
     deleteItem,
     signIn,
+    signOut,
     Types
   };

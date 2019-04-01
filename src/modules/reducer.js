@@ -26,6 +26,12 @@ const todoReducer = (state = defaultState, action) => {
       newState.signedIn = true;
       return newState;
     }
+    case ACTIONS.Types.SIGN_OUT: {
+      let newState = _.cloneDeep(state);
+      newState.signedIn = false;
+      newState.items = [];
+      return newState;
+    }
     default:
       return state;
   }

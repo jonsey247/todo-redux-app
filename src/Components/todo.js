@@ -98,11 +98,17 @@ class ToDO extends Component {
         });
       };
 
+      clearLocalStorage = () => {
+        // localStorage.clear();
+        this.props.signOut({signedIn: false});
+      }
+
       render() {
         const { classes, signedIn, passWord} = this.props;
         return (
-          localStorage.getItem('state') ? (<div>
+          signedIn ? (<div>
             <div>
+            <Button onClick={this.clearLocalStorage}>Sign Out</Button>
               <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                 <FormControl>
                   <TextField
@@ -138,7 +144,8 @@ class ToDO extends Component {
     const mapDispatchToProps = dispatch => ({
       createItem: item => dispatch(ACTIONS.createItem(item)),
       deleteItem: id => dispatch(ACTIONS.deleteItem(id)),
-      signIn: boolean => dispatch(ACTIONS.signIn(boolean))
+      signIn: boolean => dispatch(ACTIONS.signIn(boolean)),
+      signOut: boolean => dispatch(ACTIONS.signOut(boolean))
     });
     export default connect(
       mapStateToProps,
