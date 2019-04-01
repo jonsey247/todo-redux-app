@@ -9,7 +9,8 @@ import {
   Grid,
   TextField,
   Button,
-  FormControl
+  FormControl,
+  Checkbox
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ACTIONS from "../modules/action";
@@ -21,7 +22,7 @@ const styles = theme => ({
     maxWidth: 752
   },
   demo: {
-    backgroundColor: theme.palette.background.paper
+    
   },
   title: {
     margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`
@@ -29,10 +30,15 @@ const styles = theme => ({
 });
 
 class ToDO extends Component {
-    state = {};
+    state = {checked: [0]};
     generate = () => {
       return this.props.items.map(item => (
-        <ListItem key={item.id}>
+        <ListItem key={item.id} role={undefined} dense button onClick={this.handleToggle(item)}>
+          <Checkbox
+              checked={this.state.checked.indexOf(item) !== -1}
+              tabIndex={-1}
+              disableRipple
+            />
           <ListItemText primary={item.description} />
           <ListItemSecondaryAction>
             <IconButton
@@ -76,10 +82,26 @@ class ToDO extends Component {
         }
       }
 
+      handleToggle = value => () => {
+        const { checked } = this.state;
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
+    
+        if (currentIndex === -1) {
+          newChecked.push(value);
+        } else {
+          newChecked.splice(currentIndex, 1);
+        }
+    
+        this.setState({
+          checked: newChecked,
+        });
+      };
+
       render() {
-        const { classes } = this.props;
+        const { classes, signedIn, passWord} = this.props;
         return (
-          this.props.signedIn ? (<div>
+          localStorage.getItem('state') ? (<div>
             <div>
               <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                 <FormControl>
@@ -97,15 +119,13 @@ class ToDO extends Component {
                   <Button onClick={this.handleSubmit}>Add</Button>
                 </FormControl>
               </form>
-            </div>
-            <div>
               <Grid item container justify="space-evenly" alignItems="center">
                 <div className={classes.demo}>
                   <List dense={false}>{this.generate()}</List>
                 </div>
               </Grid>
             </div>
-          </div>) : (<div className="todo-app container"><SignIn signIn={this.signIn}/></div>)
+          </div>) : (<div className="todo-app container"><SignIn signIn={this.signIn} passWord={passWord}/></div>)
           
         );
       }

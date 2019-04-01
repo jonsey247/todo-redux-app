@@ -1,8 +1,18 @@
 import { createStore, applyMiddleware } from "redux";
+import {saveState , loadState} from './localStorage';
+import lodash from 'lodash';
 // Logger with default options
 import logger from "redux-logger";
 import reducer from "./reducer";
-export default function configureStore(initialState) {
-  const store = createStore(reducer, initialState, applyMiddleware(logger));
+const persistedState = loadState();
+export default function configureStore(initialState, persistedState) {
+  const store = createStore(reducer, initialState, persistedState, applyMiddleware(logger));
+  store.subscribe(lodash.throttle(() => {
+    saveState({
+      items: store.getState().items,
+      signedIn: store.getState().signedIn,
+      passWord: store.getState().passWord
+    });
+  }, 1000));
   return store;
 }
