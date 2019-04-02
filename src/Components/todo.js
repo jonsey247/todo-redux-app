@@ -99,14 +99,15 @@ class ToDO extends Component {
       };
 
       clearLocalStorage = () => {
-        // localStorage.clear();
         this.props.signOut({signedIn: false});
+        localStorage.clear();
       }
 
       render() {
-        const { classes, signedIn, passWord} = this.props;
+        const { classes, passWord} = this.props;
+        const localstore = JSON.parse(localStorage.getItem(localStorage.key(0)));
         return (
-          signedIn ? (<div>
+          localstore && localstore.signedIn ? (<div>
             <div>
             <Button onClick={this.clearLocalStorage}>Sign Out</Button>
               <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>

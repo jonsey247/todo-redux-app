@@ -5,8 +5,8 @@ import lodash from 'lodash';
 import logger from "redux-logger";
 import reducer from "./reducer";
 const persistedState = loadState();
-export default function configureStore(initialState, persistedState) {
-  const store = createStore(reducer, initialState, persistedState, applyMiddleware(logger));
+export default function configureStore(initialState) {
+  const store = createStore(reducer, initialState, applyMiddleware(logger));
   store.subscribe(lodash.throttle(() => {
     saveState({
       items: store.getState().items,
