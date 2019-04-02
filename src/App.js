@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
-import ToDO from "./Components/todo";
+import { MenuBar} from "./Components";
+import ToDO from "./pages/ToDO";
 import { Provider as ReduxProvider } from "react-redux";
 import configureStore from "./modules/store";
 const reduxStore = configureStore(window.REDUX_INITIAL_DATA);
@@ -9,9 +10,7 @@ class App extends Component {
     return (
       <ReduxProvider store={reduxStore}>
         <div className="App">
-          <header className="App-header">
-            <h1 className="App-title">ToDo Redux app</h1>
-          </header>
+          <MenuBar localstore={JSON.parse(localStorage.getItem(localStorage.key(0)))}/>
           <ToDO />
         </div>
       </ReduxProvider>

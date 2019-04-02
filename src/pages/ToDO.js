@@ -15,7 +15,8 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import ACTIONS from "../modules/action";
 import { connect } from "react-redux";
-import SignIn from './SignIn';
+import  { SignIn, TodoModal } from '../Components';
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -33,33 +34,22 @@ class ToDO extends Component {
     state = {checked: [0]};
     generate = () => {
       return this.props.items.map(item => (
-        <ListItem key={item.id} role={undefined} dense button onClick={this.handleToggle(item)}>
-          <Checkbox
-              checked={this.state.checked.indexOf(item) !== -1}
-              tabIndex={-1}
-              disableRipple
-            />
-          <ListItemText primary={item.description} />
-          <ListItemSecondaryAction>
-            <IconButton
-              aria-label="Delete"
-              onClick={this.handleDelete}
-              value={item.id}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
+        <TodoModal key={item.id} item={item} tags={item.tags} handleDelete={this.handleDelete}/>
       ));
     };
 
 
     handleSubmit = event => {
         // console.log(this.state.item);
-        this.setState({ item: "" });
+        this.setState(
+          { item: "",
+            title: '',
+            date: '',
+            tags: '' 
+          });
         if (this.state.item !== "") {
           // add the item to the store
-          this.props.createItem(this.state.item);
+          this.props.createItem(this.state);
         }
         event.preventDefault();
       };
@@ -68,6 +58,7 @@ class ToDO extends Component {
         this.props.deleteItem(event.target.value);
       };
       handleChange = event => {
+        console.log(event.target.name, ' : ', event.target.value)
         this.setState({
           [event.target.name]: event.target.value
         });
@@ -112,13 +103,43 @@ class ToDO extends Component {
             <Button onClick={this.clearLocalStorage}>Sign Out</Button>
               <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                 <FormControl>
+                <TextField
+                    label="Title"
+                    id="margin-dense"
+                    value={this.state.title}
+                    className={classes.textField}
+                    margin="dense"
+                    name="title"
+                    onChange={this.handleChange}
+                  />
                   <TextField
-                    label="New Task"
+                    label="description"
                     id="margin-dense"
                     value={this.state.item}
                     className={classes.textField}
                     margin="dense"
                     name="item"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    id="date"
+                    label="Date"
+                    type="date"
+                    defaultValue="2019-05-24"
+                    className={classes.textField}
+                    name='date'
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <TextField
+                    label="Tags"
+                    id="margin-dense"
+                    value={this.state.tags}
+                    className={classes.textField}
+                    margin="dense"
+                    name="tags"
                     onChange={this.handleChange}
                   />
                 </FormControl>
