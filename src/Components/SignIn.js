@@ -49,7 +49,7 @@ class SignIn extends Component {
                     <input type="text" onChange={this.handleChange} value={this.state.password} />
                     
                 </form>
-                <Button size="medium" onCLick={this.handleSubmit}>sign in</Button>
+                <Button size="medium" onClick={this.handleSubmit}>sign in</Button>
                 {incorrectPassMessage}
             </div>
         )
