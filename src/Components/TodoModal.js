@@ -53,6 +53,11 @@ const styles = theme => ({
 
 function TodoModal(props) {
   const { classes, item , tags, handleDelete} = props;
+  const generate = () => {
+    return tags.map(tag => (
+      <Chip label={tag} className={styles.chip} onDelete={() => {}} />
+      ));
+  };
   return (
     <div className={styles.root}>
       <ExpansionPanel defaultExpanded>
@@ -67,13 +72,13 @@ function TodoModal(props) {
           </div>
           <div className={styles.column} />
           <div className={styles.column}>
-            <Chip label={tags} className={styles.chip} onDelete={() => {}} />
+            {generate()}
           </div>
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
           <IconButton aria-label="Delete" onClick={handleDelete}>
-          <DeleteIcon fontSize="large" />
+          <DeleteIcon fontSize="medium" />
         </IconButton>
         </ExpansionPanelActions>
       </ExpansionPanel>
