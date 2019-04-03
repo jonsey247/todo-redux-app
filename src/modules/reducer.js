@@ -1,7 +1,7 @@
 import ACTIONS from "./action";
 import _ from "lodash";
 const defaultState = {
-  items: [],
+  items:[{"id":1,"title":"test 1","description":" text text sladf ", date: "2019-05-25", "tags":"teg"},{"id":2,"title":"asdf","description":"asdf","date":"2019-05-25","tags":"teg"},{"id":3,"title":"the","description":"test","date":"2019-05-25","tags":"teg"}, {"id":4,"title":"test 4","description":" text text sladf ", date: "2019-05-26", "tags":"teg"}],
   signedIn: false,
   passWord: "pass"
 };
@@ -30,6 +30,13 @@ const todoReducer = (state = defaultState, action) => {
       let newState = _.cloneDeep(state);
       newState.signedIn = false;
       newState.items = [];
+      return newState;
+    }
+    case ACTIONS.Types.FILTER_BY_DATE: {
+      let newState = _.cloneDeep(state);
+      console.log('payload: ',action.payload)
+      console.log('newstate ',newState)
+      newState.items = newState.items.filter(item => item.date === action.payload);
       return newState;
     }
     default:

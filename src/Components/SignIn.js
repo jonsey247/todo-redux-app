@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Button from '@material-ui/core/Button';
 
 class SignIn extends Component {
     state = {
@@ -27,6 +28,7 @@ class SignIn extends Component {
         }
     }
     
+    
     render() {
     const wrongPass = this.state.wrongPass;
     let incorrectPassMessage;
@@ -45,7 +47,9 @@ class SignIn extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <label style={{color: this.state.colour}}>sign in</label>
                     <input type="text" onChange={this.handleChange} value={this.state.password} />
+                    
                 </form>
+                <Button size="medium" onCLick={this.handleSubmit}>sign in</Button>
                 {incorrectPassMessage}
             </div>
         )

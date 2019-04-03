@@ -3,7 +3,8 @@ const Types = {
     CREATE_ITEM: "CREATE_ITEM",
     DELETE_ITEM: "DELETE_ITEM",
     SIGN_IN: "SIGN_IN",
-    SIGN_OUT: "SIGN_OUT"
+    SIGN_OUT: "SIGN_OUT",
+    FILTER_BY_DATE: "FILTER_BY_DATE"
   };
   // actions
   const createItem = task => ({
@@ -22,10 +23,15 @@ const Types = {
     type: Types.SIGN_OUT,
     payload: signIn
   });
+  const filterByDate = date => ({
+    type: Types.FILTER_BY_DATE,
+    payload: date
+  });
   export default {
     createItem,
     deleteItem,
     signIn,
     signOut,
+    filterByDate,
     Types
   };

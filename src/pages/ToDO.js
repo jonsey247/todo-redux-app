@@ -31,7 +31,7 @@ const styles = theme => ({
 });
 
 class ToDO extends Component {
-    state = {checked: [0]};
+    state = {checked: [0],errors: false, label: 'Title', errorText: '' };
     generate = () => {
       return this.props.items.map(item => (
         <TodoModal key={item.id} item={item} tags={item.tags} handleDelete={this.handleDelete}/>
@@ -40,19 +40,26 @@ class ToDO extends Component {
 
 
     handleSubmit = event => {
-        // console.log(this.state.item);
-        this.setState(
-          { item: "",
-            title: '',
-            date: '',
-            tags: '' 
-          });
-        if (this.state.item !== "") {
-          // add the item to the store
+      // console.log(this.state.item);
+      this.setState(
+        { item: "",
+          title: '',
+          date: '',
+          tags: '' 
+        });
+        if (this.state.title && this.state.item && this.state.tags) {
+          this.setState({ errorText: '' })
           this.props.createItem(this.state);
+        } else {
+          this.setState({ errorText: 'Please Fill out all fields' })
         }
-        event.preventDefault();
-      };
+      // event.preventDefault();
+    };
+      check = event => {
+        console.log(event)
+        return this.state.title ? true : false
+        console.log(this.state.errors)
+      }
       handleDelete = event => {
         // delete the item from the store
         this.props.deleteItem(event.target.value);
@@ -66,7 +73,6 @@ class ToDO extends Component {
       signIn = (password) => {
         if(password === this.props.passWord) {
           let signedIn = true;
-          console.log(this.props.passWord)
           this.props.signIn({
             signedIn
           })
@@ -91,8 +97,14 @@ class ToDO extends Component {
 
       clearLocalStorage = () => {
         this.props.signOut({signedIn: false});
+        this.setState({ errorText: '' })
         localStorage.clear();
       }
+
+      filterByDate = event => {
+        console.log(event.target.name, ' : ', event.target.value)
+        this.props.filterByDate(this.state.date);
+      };
 
       render() {
         const { classes, passWord} = this.props;
@@ -110,6 +122,9 @@ class ToDO extends Component {
                     className={classes.textField}
                     margin="dense"
                     name="title"
+                    required="true"
+                    helperText={this.state.errorText}
+                    error ={this.state.errorText.length === 0 ? false : true }
                     onChange={this.handleChange}
                   />
                   <TextField
@@ -119,6 +134,9 @@ class ToDO extends Component {
                     className={classes.textField}
                     margin="dense"
                     name="item"
+                    required="true"
+                    helperText={this.state.errorText}
+                    error ={this.state.errorText.length === 0 ? false : true }
                     onChange={this.handleChange}
                   />
                   <TextField
@@ -140,6 +158,9 @@ class ToDO extends Component {
                     className={classes.textField}
                     margin="dense"
                     name="tags"
+                    required="true"
+                    helperText={this.state.errorText}
+                    error ={this.state.errorText.length === 0 ? false : true }
                     onChange={this.handleChange}
                   />
                 </FormControl>
@@ -149,6 +170,19 @@ class ToDO extends Component {
               </form>
               <Grid item container justify="space-evenly" alignItems="center">
                 <div className={classes.demo}>
+                <TextField
+                    id="date"
+                    label="Date"
+                    type="date"
+                    defaultValue="2019-05-24"
+                    className={classes.textField}
+                    name='date'
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                <Button onClick={this.filterByDate}>filter by date</Button>
                   <List dense={false}>{this.generate()}</List>
                 </div>
               </Grid>
@@ -167,7 +201,8 @@ class ToDO extends Component {
       createItem: item => dispatch(ACTIONS.createItem(item)),
       deleteItem: id => dispatch(ACTIONS.deleteItem(id)),
       signIn: boolean => dispatch(ACTIONS.signIn(boolean)),
-      signOut: boolean => dispatch(ACTIONS.signOut(boolean))
+      signOut: boolean => dispatch(ACTIONS.signOut(boolean)),
+      filterByDate: date => dispatch(ACTIONS.filterByDate(date))
     });
     export default connect(
       mapStateToProps,
