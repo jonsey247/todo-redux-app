@@ -47,7 +47,7 @@ class ToDO extends Component {
           date: '',
           tags: '' 
         });
-        if (this.state.title && this.state.item && this.state.tags) {
+        if (this.state.title && this.state.item && this.state.tags && this.state.date) {
           this.setState({ errorText: '' })
           this.props.createItem(this.state);
         } else {
@@ -143,9 +143,12 @@ class ToDO extends Component {
                     id="date"
                     label="Date"
                     type="date"
-                    defaultValue="2019-05-24"
+                    defaultValue=""
                     className={classes.textField}
                     name='date'
+                    required="true"
+                    helperText={this.state.errorText}
+                    error ={this.state.errorText.length === 0 ? false : true }
                     onChange={this.handleChange}
                     InputLabelProps={{
                       shrink: true,
