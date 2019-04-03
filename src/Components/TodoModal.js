@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
-import { connect } from "react-redux";
+import format from 'date-fns/format'
 
 const styles = theme => ({
   root: {
@@ -64,6 +64,9 @@ function TodoModal(props) {
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <div className={styles.column}>
             <Typography className={styles.heading}>{item.title}</Typography>
+          </div>
+          <div className={styles.column}>
+            <Typography className={styles.heading}>{format(new Date(item.date), "dddd do MMMM")}</Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={styles.details}>

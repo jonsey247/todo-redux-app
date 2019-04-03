@@ -13,6 +13,11 @@ const todoReducer = (state = defaultState, action) => {
       let newItem = { id: state.items.length + 1, title: item.title, description: item.item, date: item.date, tags: item.tags.split(',') };
       let newState = _.cloneDeep(state);
       newState.items.push(newItem);
+      newState.items.sort(function(a,b){
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(b.date) - new Date(a.date);
+      });
       return newState;
     }
     case ACTIONS.Types.DELETE_ITEM: {
