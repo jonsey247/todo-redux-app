@@ -187,11 +187,11 @@ class ToDO extends Component {
                   />
                 </FormControl>
                 <FormControl>
-                  <Button onClick={this.handleSubmit}>Add</Button>
+                  <Button onClick={this.handleSubmit} id="add">Add</Button>
                 </FormControl>
               </form>
               {items.map(item => (
-                <div className={classes.demo}>
+                <div className={classes.demo} id={item.id}>
                 <h1>{item.day}</h1>
                   <List dense={false}> <TodoModal key={item.id} item={item} tags={item.tags} handleDelete={this.handleDelete}/></List>
                 </div>

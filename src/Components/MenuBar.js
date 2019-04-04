@@ -61,14 +61,6 @@ class MenuBar extends Component {
     let isAuth = localstore && localstore.signedIn ? true : false;
     return (
       <div className={styles.root}>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch checked={isAuth} onChange={this.handleChange} aria-label="LoginSwitch" />
-            }
-            label={isAuth ? 'Logout' : 'Login'}
-          />
-        </FormGroup>
         <AppBar position="static">
           <Toolbar>
             <IconButton className={styles.menuButton} color="inherit" aria-label="Menu">
