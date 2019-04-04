@@ -10,7 +10,7 @@ import {
   TextField,
   Button,
   FormControl,
-  Checkbox
+  MenuItem
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ACTIONS from "../modules/action";
@@ -27,27 +27,36 @@ const styles = theme => ({
   },
   title: {
     margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`
-  }
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
+  dense: {
+    marginTop: 19,
+  },
+  menu: {
+    width: 200,
+  },
 });
 
 class ToDO extends Component {
     state = {checked: [0],errors: false, label: 'Title', errorText: '' };
-    generate = () => {
-      return this.props.items.map(item => (
-        <TodoModal key={item.id} item={item} tags={item.tags} handleDelete={this.handleDelete}/>
-      ));
-    };
-
-
+    
     handleSubmit = event => {
       // console.log(this.state.item);
       this.setState(
         { item: "",
           title: '',
-          date: '',
+          day: '',
           tags: '' 
         });
-        if (this.state.title && this.state.item && this.state.tags && this.state.date) {
+        if (this.state.title && this.state.item && this.state.tags && this.state.day) {
           this.setState({ errorText: '' })
           this.props.createItem(this.state);
         } else {
@@ -107,7 +116,7 @@ class ToDO extends Component {
       };
 
       render() {
-        const { classes, passWord} = this.props;
+        const { classes, passWord, days, items, error} = this.props;
         const localstore = JSON.parse(localStorage.getItem(localStorage.key(0)));
         return (
           localstore && localstore.signedIn ? (<div>
@@ -140,20 +149,30 @@ class ToDO extends Component {
                     onChange={this.handleChange}
                   />
                   <TextField
-                    id="date"
-                    label="Date"
-                    type="date"
-                    defaultValue=""
+                    id="day"
+                    select
+                    label="Day"
+                    type="day"
+                    name="day"
                     className={classes.textField}
-                    name='date'
+                    value={this.state.day}
                     required="true"
-                    helperText={this.state.errorText}
-                    error ={this.state.errorText.length === 0 ? false : true }
+                    error ={error}
                     onChange={this.handleChange}
-                    InputLabelProps={{
-                      shrink: true,
+                    SelectProps={{
+                      MenuProps: {
+                        className: classes.menu,
+                      },
                     }}
-                  />
+                    helperText="Cannot enter in the same day"
+                    margin="normal"
+                  >
+                    {days.map(option => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                   <TextField
                     label="Tags"
                     id="margin-dense"
@@ -171,24 +190,12 @@ class ToDO extends Component {
                   <Button onClick={this.handleSubmit}>Add</Button>
                 </FormControl>
               </form>
-              <Grid item container justify="space-evenly" alignItems="center">
+              {items.map(item => (
                 <div className={classes.demo}>
-                <TextField
-                    id="date"
-                    label="Date"
-                    type="date"
-                    defaultValue="2019-05-24"
-                    className={classes.textField}
-                    name='date'
-                    onChange={this.handleChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                <Button onClick={this.filterByDate}>filter by date</Button>
-                  <List dense={false}>{this.generate()}</List>
+                <h1>{item.day}</h1>
+                  <List dense={false}> <TodoModal key={item.id} item={item} tags={item.tags} handleDelete={this.handleDelete}/></List>
                 </div>
-              </Grid>
+              ))}
             </div>
           </div>) : (<div className="todo-app container"><SignIn signIn={this.signIn} passWord={passWord}/></div>)
           
@@ -198,7 +205,9 @@ class ToDO extends Component {
     const mapStateToProps = state => ({
       items: state.items,
       signedIn: state.signedIn,
-      passWord: state.passWord
+      passWord: state.passWord,
+      days: state.days,
+      error: state.error
     });
     const mapDispatchToProps = dispatch => ({
       createItem: item => dispatch(ACTIONS.createItem(item)),

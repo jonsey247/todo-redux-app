@@ -1,24 +1,46 @@
 import ACTIONS from "./action";
 import _ from "lodash";
+import validate from "./validate"
 const defaultState = {
-  items:[{"id":1,"title":"test 1","description":" text text sladf ", date: "2019-05-25", "tags":["teg"]},{"id":2,"title":"asdf","description":"asdf","date":"2019-05-25","tags":["teg"]},{"id":3,"title":"the","description":"test","date":"2019-05-25","tags":["teg"]}, {"id":4,"title":"test 4","description":" text text sladf ", date: "2019-05-26", "tags":["teg", "stuff"]}],
+  items:[],
   signedIn: false,
-  passWord: "pass"
+  passWord: "pass",
+  days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+  error: false
 };
+
+const sorter = {
+  "monday": 1,
+  "tuesday": 2,
+  "wednesday": 3,
+  "thursday": 4,
+  "friday": 5,
+  "saturday": 6,
+  "sunday": 7
+};
+
 const todoReducer = (state = defaultState, action) => {
   switch (action.type) {
     case ACTIONS.Types.CREATE_ITEM: {
       console.log(action);
-      let item = action.payload;
-      let newItem = { id: state.items.length + 1, title: item.title, description: item.item, date: item.date, tags: item.tags.split(',') };
-      let newState = _.cloneDeep(state);
-      newState.items.push(newItem);
-      newState.items.sort(function(a,b){
-        // Turn your strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
-        return new Date(b.date) - new Date(a.date);
-      });
-      return newState;
+      let item = action.payload,
+      check = validate(item, state.items);
+      if(check.title && check.day) {
+        let newItem = { id: state.items.length + 1, title: item.title, description: item.item, day: item.day, tags: item.tags.split(',') };
+        let newState = _.cloneDeep(state);
+        newState.items.push(newItem);
+        newState.items.sort(function sortByDay(a, b) {
+          var day1 = a.day.toLowerCase();
+          var day2 = b.day.toLowerCase();
+          return sorter[day1] > sorter[day2];
+        });
+        newState.error = false
+        return newState;
+      } else {
+        let newState = _.cloneDeep(state);
+        newState.error = true
+        return newState;
+      }
     }
     case ACTIONS.Types.DELETE_ITEM: {
       let newState = _.cloneDeep(state);

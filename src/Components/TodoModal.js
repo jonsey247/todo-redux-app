@@ -66,7 +66,7 @@ function TodoModal(props) {
             <Typography className={styles.heading}>{item.title}</Typography>
           </div>
           <div className={styles.column}>
-            <Typography className={styles.heading}>{format(new Date(item.date), "dddd do MMMM")}</Typography>
+            <Typography className={styles.heading}>{item.day}</Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={styles.details}>
