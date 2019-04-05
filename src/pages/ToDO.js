@@ -1,18 +1,11 @@
 import React, { Component } from "react";
 import {
   withStyles,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  IconButton,
-  Grid,
   TextField,
   Button,
   FormControl,
   MenuItem
 } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
 import ACTIONS from "../modules/action";
 import { connect } from "react-redux";
 import  { SignIn, TodoModal } from '../Components';
@@ -64,13 +57,8 @@ class ToDO extends Component {
         } else {
           this.setState({ errorText: 'Please Fill out all fields' })
         }
-      // event.preventDefault();
     };
-      check = event => {
-        console.log(event)
-        return this.state.title ? true : false
-        console.log(this.state.errors)
-      }
+
       handleDelete = event => {
         // delete the item from the store
         this.props.deleteItem(event.target.value);
