@@ -1,19 +1,12 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import ACTIONS from "../modules/action";
-import { connect } from "react-redux";
 
 const styles = {
   root: {
@@ -54,8 +47,7 @@ class MenuBar extends Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const localstore = JSON.parse(localStorage.getItem(localStorage.key(0)));
     let isAuth = localstore && localstore.signedIn ? true : false;
@@ -104,17 +96,5 @@ class MenuBar extends Component {
     );
   }
 }
-
-MenuBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-const mapDispatchToProps = dispatch => ({
-    createItem: item => dispatch(ACTIONS.createItem(item)),
-    deleteItem: id => dispatch(ACTIONS.deleteItem(id)),
-    signIn: boolean => dispatch(ACTIONS.signIn(boolean)),
-    signOut: boolean => dispatch(ACTIONS.signOut(boolean))
-  });
-  
 
 export { MenuBar };

@@ -37,10 +37,15 @@ const styles = theme => ({
   },
   column: {
     flexBasis: '33.33%',
+    alignContent: 'center'
   },
   helper: {
     borderLeft: `2px solid ${theme.palette.divider}`,
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+  },
+  chip: {
+    flexBasis: '33.33%',
+    alignContent: 'right'
   },
   link: {
     color: theme.palette.primary.main,
@@ -60,13 +65,10 @@ function TodoModal(props) {
   };
   return (
     <div className={styles.root}>
-      <ExpansionPanel defaultExpanded>
+      <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <div className={styles.column}>
             <Typography className={styles.heading}>{item.title}</Typography>
-          </div>
-          <div className={styles.column}>
-            <Typography className={styles.heading}>{item.day}</Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={styles.details}>

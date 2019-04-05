@@ -23,7 +23,9 @@ const styles = theme => ({
     maxWidth: 752
   },
   demo: {
-    
+    width: '50%',
+    alignContent: 'center',
+    marginLeft: theme.typography.pxToRem(287),
   },
   title: {
     margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`
@@ -193,7 +195,7 @@ class ToDO extends Component {
               {items.map(item => (
                 <div className={classes.demo} id={item.id}>
                 <h1>{item.day}</h1>
-                  <List dense={false}> <TodoModal key={item.id} item={item} tags={item.tags} handleDelete={this.handleDelete}/></List>
+                  <TodoModal key={item.id} item={item} tags={item.tags} handleDelete={this.handleDelete}/>
                 </div>
               ))}
             </div>

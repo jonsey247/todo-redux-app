@@ -10,8 +10,7 @@ export default function configureStore(initialState) {
   store.subscribe(lodash.throttle(() => {
     saveState({
       items: store.getState().items,
-      signedIn: store.getState().signedIn,
-      passWord: store.getState().passWord
+      signedIn: store.getState().signedIn
     });
   }, 1000));
   return store;
