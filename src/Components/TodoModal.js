@@ -69,7 +69,7 @@ function TodoModal(props) {
           </div>
           <div className={styles.column} />
           <div className={styles.column}>
-          <Chip label={tags} className={styles.chip} onDelete={() => {}} />
+          <Chip label={tags} className={styles.chip}/>
           </div>
         </ExpansionPanelDetails>
         <Divider />

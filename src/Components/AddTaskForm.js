@@ -15,6 +15,9 @@ import ACTIONS from "../modules/action";
 import { connect } from "react-redux";
 
 const styles = theme => ({
+  form: {
+    padding: 30,
+  },
   buttonWrapper: {
     position: 'relative',
     marginBottom: theme.spacing.unit * 4,
@@ -175,7 +178,7 @@ class AddTaskForm extends React.Component {
             horizontal: transformOriginHorizontal,
           }}
         >
-          <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+          <form noValidate autoComplete="off" className={classes.form} onSubmit={this.handleSubmit}>
                 <FormControl>
                 <TextField
                     label="Title"

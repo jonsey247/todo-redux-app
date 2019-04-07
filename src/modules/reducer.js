@@ -44,7 +44,7 @@ const todoReducer = (state = defaultState, action) => {
       console.log(action);
       let item = action.payload,
       check = validate(item, state.items);
-      if(check.title && check.day) {
+      if(check.title && check.day && check.date) {
         let newItem = { id: state.items.length + 1, title: item.title, description: item.item, day: item.day, date: formatDate(new Date()), tags: item.tags };
         let newState = _.cloneDeep(state);
         newState.items.push(newItem);
@@ -80,8 +80,6 @@ const todoReducer = (state = defaultState, action) => {
     }
     case ACTIONS.Types.FILTER_BY_TAG: {
       let newState = _.cloneDeep(state);
-      console.log('payload: ',action.payload)
-      console.log('newstate ',newState)
       newState.items = newState.items.filter(item => item.tags === action.payload);
       return newState;
     }
