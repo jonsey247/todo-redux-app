@@ -8,7 +8,8 @@ import {
 } from "@material-ui/core";
 import ACTIONS from "../modules/action";
 import { connect } from "react-redux";
-import  { SignIn, TodoModal } from '../Components';
+import  { SignIn, TodoModal, FilterForm } from '../Components';
+import AddTaskForm from '../Components/AddTaskForm';
 
 const styles = theme => ({
   root: {
@@ -97,7 +98,7 @@ class ToDO extends Component {
       clearLocalStorage = () => {
         this.props.signOut({signedIn: false});
         this.setState({ errorText: '' })
-        localStorage.clear();
+        // localStorage.clear();
       }
 
       filterByDate = event => {
@@ -106,80 +107,14 @@ class ToDO extends Component {
       };
 
       render() {
-        const { classes, passWord, days, items, error} = this.props;
+        const { classes, passWord, days, items, error, tags} = this.props;
         const localstore = JSON.parse(localStorage.getItem(localStorage.key(0)));
         return (
           localstore && localstore.signedIn ? (<div>
             <div>
             <Button onClick={this.clearLocalStorage}>Sign Out</Button>
-              <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                <FormControl>
-                <TextField
-                    label="Title"
-                    id="margin-dense"
-                    value={this.state.title}
-                    className={classes.textField}
-                    margin="dense"
-                    name="title"
-                    required="true"
-                    helperText={this.state.errorText}
-                    error ={this.state.errorText.length === 0 ? false : true }
-                    onChange={this.handleChange}
-                  />
-                  <TextField
-                    label="description"
-                    id="margin-dense"
-                    value={this.state.item}
-                    className={classes.textField}
-                    margin="dense"
-                    name="item"
-                    required="true"
-                    helperText={this.state.errorText}
-                    error ={this.state.errorText.length === 0 ? false : true }
-                    onChange={this.handleChange}
-                  />
-                  <TextField
-                    id="day"
-                    select
-                    label="Day"
-                    type="day"
-                    name="day"
-                    className={classes.textField}
-                    value={this.state.day}
-                    required="true"
-                    error ={error}
-                    onChange={this.handleChange}
-                    SelectProps={{
-                      MenuProps: {
-                        className: classes.menu,
-                      },
-                    }}
-                    helperText="Cannot enter in the same day"
-                    margin="normal"
-                  >
-                    {days.map(option => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    label="Tags"
-                    id="margin-dense"
-                    value={this.state.tags}
-                    className={classes.textField}
-                    margin="dense"
-                    name="tags"
-                    required="true"
-                    helperText={this.state.errorText}
-                    error ={this.state.errorText.length === 0 ? false : true }
-                    onChange={this.handleChange}
-                  />
-                </FormControl>
-                <FormControl>
-                  <Button onClick={this.handleSubmit} id="add">Add</Button>
-                </FormControl>
-              </form>
+              <AddTaskForm error={error} days={days} handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
+              <FilterForm tags={tags} days={days} filterByTag={this.props.filterByTag}/>
               {items.map(item => (
                 <div className={classes.demo} id={item.id}>
                 <h1>{item.day}</h1>
@@ -187,7 +122,16 @@ class ToDO extends Component {
                 </div>
               ))}
             </div>
-          </div>) : (<div className="todo-app container"><SignIn signIn={this.signIn} passWord={passWord}/></div>)
+          </div>) : 
+          (<div className="todo-app container">
+            <SignIn signIn={this.signIn} passWord={passWord}/>
+            {items.map(item => (
+                <div className={classes.demo} id={item.id}>
+                <h1>{item.day}</h1>
+                  <TodoModal key={item.id} item={item} tags={item.tags} handleDelete={this.handleDelete}/>
+                </div>
+              ))}
+          </div>)
           
         );
       }
@@ -197,14 +141,15 @@ class ToDO extends Component {
       signedIn: state.signedIn,
       passWord: state.passWord,
       days: state.days,
-      error: state.error
+      error: state.error,
+      tags: state.tags
     });
     const mapDispatchToProps = dispatch => ({
       createItem: item => dispatch(ACTIONS.createItem(item)),
       deleteItem: id => dispatch(ACTIONS.deleteItem(id)),
       signIn: boolean => dispatch(ACTIONS.signIn(boolean)),
       signOut: boolean => dispatch(ACTIONS.signOut(boolean)),
-      filterByDate: date => dispatch(ACTIONS.filterByDate(date))
+      filterByTag: tag => dispatch(ACTIONS.filterByTag(tag))
     });
     export default connect(
       mapStateToProps,

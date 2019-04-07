@@ -54,11 +54,7 @@ const styles = theme => ({
 
 function TodoModal(props) {
   const { item , tags, handleDelete} = props;
-  const generate = () => {
-    return tags.map(tag => (
-      <Chip label={tag} className={styles.chip} onDelete={() => {}} />
-      ));
-  };
+  
   return (
     <div className={styles.root}>
       <ExpansionPanel>
@@ -73,7 +69,7 @@ function TodoModal(props) {
           </div>
           <div className={styles.column} />
           <div className={styles.column}>
-            {generate()}
+          <Chip label={tags} className={styles.chip} onDelete={() => {}} />
           </div>
         </ExpansionPanelDetails>
         <Divider />

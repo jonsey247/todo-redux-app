@@ -45,7 +45,7 @@ class SignIn extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <label style={{color: this.state.colour}}>sign in</label>
+                    <label style={{color: this.state.colour}}>Please sign in to add a task</label> <br />
                     <input type="text" onChange={this.handleChange} value={this.state.password} />
                     
                 </form>

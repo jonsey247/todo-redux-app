@@ -4,7 +4,7 @@ const Types = {
     DELETE_ITEM: "DELETE_ITEM",
     SIGN_IN: "SIGN_IN",
     SIGN_OUT: "SIGN_OUT",
-    FILTER_BY_DATE: "FILTER_BY_DATE"
+    FILTER_BY_TAG: "FILTER_BY_TAG"
   };
   // actions
   const createItem = task => ({
@@ -23,15 +23,15 @@ const Types = {
     type: Types.SIGN_OUT,
     payload: signIn
   });
-  const filterByDate = date => ({
-    type: Types.FILTER_BY_DATE,
-    payload: date
+  const filterByTag = tag => ({
+    type: Types.FILTER_BY_TAG,
+    payload: tag
   });
   export default {
     createItem,
     deleteItem,
     signIn,
     signOut,
-    filterByDate,
+    filterByTag,
     Types
   };
