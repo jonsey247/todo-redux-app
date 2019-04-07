@@ -147,7 +147,7 @@ class AddTaskForm extends React.Component {
               variant="contained"
               onClick={this.handleClickButton}
             >
-              Add New Task
+              Today I have...
             </Button>
             {anchorReference === 'anchorEl' && (
               <div

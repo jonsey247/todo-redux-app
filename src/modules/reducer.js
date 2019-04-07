@@ -2,7 +2,10 @@ import ACTIONS from "./action";
 import _ from "lodash";
 import validate from "./validate"
 const defaultState = {
-  items:[{id:1,title:"Monday task",description:"I wrote some code",day:"Monday",date:"",tags:"teg1"},{id:2,title:"Tuesday task",description:"I had a meeting",day:"Tuesday",date:"2019-04-07T16:19:47.519Z",tags:"meeting"}],
+  items:[
+    {"id":1,"title":"Monday task","description":"I wrote some code","day":"Monday","date":"6 April 2019","tags":"teg1"},
+    {"id":2,"title":"Tuesday task","description":"I had a meeting","day":"Tuesday","date":"7 April 2019","tags":"meeting"},
+    {"id":3,"title":"wednesday task","description":"had a stand up","day":"Wednesday","date":"8 April 2019","tags":"tags"}],
   signedIn: false,
   passWord: "pass",
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -20,6 +23,21 @@ const sorter = {
   "sunday": 7
 };
 
+const formatDate = (date) => {
+  var monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+
+  var day = date.getDate();
+  var monthIndex = date.getMonth();
+  var year = date.getFullYear();
+
+  return day + ' ' + monthNames[monthIndex] + ' ' + year;
+}
+
 const todoReducer = (state = defaultState, action) => {
   switch (action.type) {
     case ACTIONS.Types.CREATE_ITEM: {
@@ -27,7 +45,7 @@ const todoReducer = (state = defaultState, action) => {
       let item = action.payload,
       check = validate(item, state.items);
       if(check.title && check.day) {
-        let newItem = { id: state.items.length + 1, title: item.title, description: item.item, day: item.day, date: new Date(), tags: item.tags };
+        let newItem = { id: state.items.length + 1, title: item.title, description: item.item, day: item.day, date: formatDate(new Date()), tags: item.tags };
         let newState = _.cloneDeep(state);
         newState.items.push(newItem);
         newState.tags.push(item.tags.split(','))
