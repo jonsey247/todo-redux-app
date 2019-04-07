@@ -5,12 +5,12 @@ const defaultState = {
   items:[
     {"id":1,"title":"Monday task","description":"I wrote some code","day":"Monday","date":"6 April 2019","tags":"teg1"},
     {"id":2,"title":"Tuesday task","description":"I had a meeting","day":"Tuesday","date":"7 April 2019","tags":"meeting"},
-    {"id":3,"title":"wednesday task","description":"had a stand up","day":"Wednesday","date":"8 April 2019","tags":"tags"}],
+    {"id":3,"title":"wednesday task","description":"had a stand up","day":"Wednesday","date":"8 April 2019","tags":"standup"}],
   signedIn: false,
   passWord: "pass",
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
   error: false,
-  tags: ['teg1']
+  tags: ['teg1','meeting','standup']
 };
 
 const sorter = {
@@ -80,9 +80,9 @@ const todoReducer = (state = defaultState, action) => {
     }
     case ACTIONS.Types.FILTER_BY_TAG: {
       let newState = _.cloneDeep(state);
-      console.log('payload: ',action.payload[0])
+      console.log('payload: ',action.payload)
       console.log('newstate ',newState)
-      newState.items = newState.items.filter(item => item.tags === action.payload[0]);
+      newState.items = newState.items.filter(item => item.tags === action.payload);
       return newState;
     }
     default:
